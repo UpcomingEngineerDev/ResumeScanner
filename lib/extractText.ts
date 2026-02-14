@@ -37,14 +37,7 @@ export async function extractTextFromBuffer(
     try {
       const result = await mammoth.extractRawText({ buffer });
       const text = result?.value ?? '';
-      let trimmed = String(text).replace(/\s+/g, ' ').trim();
-      if (trimmed.length > 0) return trimmed;
-      try {
-        const result2 = await mammoth.extractRawText({ buffer: new Uint8Array(buffer) });
-        trimmed = String(result2?.value ?? '').replace(/\s+/g, ' ').trim();
-      } catch {
-        // ignore
-      }
+      const trimmed = String(text).replace(/\s+/g, ' ').trim();
       if (trimmed.length > 0) return trimmed;
       throw new Error('Document appears empty or could not be read.');
     } catch (err) {
