@@ -33,7 +33,7 @@ export default function ScoreDisplay({ result }: ScoreDisplayProps) {
     ? result.scoreCategory
     : 'needs_improvement';
   const config = categoryConfig[category];
-  const score = Math.min(100, Math.max(0, Number(result.atsScore) || 0));
+  const score = Math.min(90, Math.max(0, Number(result.atsScore) || 0));
   const circumference = 2 * Math.PI * 54;
   const offset = circumference - (score / 100) * circumference;
 
@@ -116,7 +116,7 @@ export default function ScoreDisplay({ result }: ScoreDisplayProps) {
             Consider adding these from the job description
           </p>
           <div className="mt-2 flex flex-wrap gap-1.5">
-            {(result.missingKeywords ?? []).slice(0, 12).map((kw) => (
+            {(result.missingKeywords ?? []).slice(0, 24).map((kw) => (
               <span
                 key={kw}
                 className="rounded bg-amber-100 px-2 py-0.5 text-xs text-amber-800"
@@ -124,9 +124,9 @@ export default function ScoreDisplay({ result }: ScoreDisplayProps) {
                 {kw}
               </span>
             ))}
-            {(result.missingKeywords ?? []).length > 12 && (
+            {(result.missingKeywords ?? []).length > 24 && (
               <span className="text-xs text-gray-500">
-                +{(result.missingKeywords ?? []).length - 12} more
+                +{(result.missingKeywords ?? []).length - 24} more
               </span>
             )}
           </div>

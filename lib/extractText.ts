@@ -37,10 +37,25 @@ export async function extractTextFromBuffer(
     try {
       const result = await mammoth.extractRawText({ buffer });
       const text = result?.value ?? '';
-      return String(text).replace(/\s+/g, ' ').trim();
+      let trimmed = String(text).replace(/\s+/g, ' ').trim();
+      if (trimmed.length > 0) return trimmed;
+      try {
+        const result2 = await mammoth.extractRawText({ buffer: new Uint8Array(buffer) });
+        trimmed = String(result2?.value ?? '').replace(/\s+/g, ' ').trim();
+      } catch {
+        // ignore
+      }
+      if (trimmed.length > 0) return trimmed;
+      throw new Error('Document appears empty or could not be read.');
     } catch (err) {
-      console.error('DOCX parse error:', err);
-      throw new Error('Failed to parse Word document.');
+      const message = err instanceof Error ? err.message : '';
+      if (message.includes('empty') || message.includes('could not be read')) {
+        throw new Error('Could not read this Word file. Please save your resume as PDF or .docx (Word 2007+) and try again.');
+      }
+      console.error('Word parse error:', err);
+      throw new Error(
+        'Could not read this Word file. Please save your resume as PDF or .docx (Word 2007+) and try again. Old .doc (97-2003) format is not supported.'
+      );
     }
   }
 

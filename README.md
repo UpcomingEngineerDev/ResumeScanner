@@ -48,7 +48,7 @@ If you use **nvm**: run `nvm use` (or `nvm install` if needed) before `npm insta
 5. After deploy, your app is live at `https://your-project.vercel.app`.
 
 **Optional – env vars for email:** In the Vercel project → **Settings → Environment Variables**, add:
-- `RESEND_API_KEY` (and `FROM_EMAIL`) for Resend, or
+- `RESEND_API_KEY` for Resend (reports are sent from **info@upcomingengineer.com** by default; set `FROM_EMAIL` to override), or
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` for SMTP.
 
 Redeploy after adding variables.
@@ -69,7 +69,7 @@ Then open [http://localhost:3000](http://localhost:3000). To expose it on the in
 Copy `.env.example` to `.env.local` and add (for local dev or Vercel):
 
 - `RESEND_API_KEY` — For sending emails via [Resend](https://resend.com)
-- `FROM_EMAIL` — Sender address (e.g. `notifications@yourdomain.com`)
+- `FROM_EMAIL` — Sender address (default: **info@upcomingengineer.com**)
 
 Or use SMTP: `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`
 

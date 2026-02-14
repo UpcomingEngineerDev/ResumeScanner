@@ -30,7 +30,7 @@ export function analyzeResume(
 
   const totalImportant = importantKeywords.length || 1;
   const score = Math.round((matched.length / totalImportant) * 100);
-  const atsScore = Math.min(100, Math.max(0, score));
+  const atsScore = Math.min(90, Math.max(0, score));
 
   let scoreCategory: 'excellent' | 'moderate' | 'needs_improvement' = 'needs_improvement';
   if (atsScore >= 80) scoreCategory = 'excellent';

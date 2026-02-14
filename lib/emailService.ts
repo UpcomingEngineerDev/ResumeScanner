@@ -2,7 +2,7 @@ import type { ReportData } from './types';
 import { generateReportPDF } from './generatePDF';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const FROM_EMAIL = process.env.FROM_EMAIL || 'onboarding@resend.dev';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'info@upcomingengineer.com';
 const FROM_NAME = 'Upcoming Engineer';
 
 export async function sendReportEmail(
