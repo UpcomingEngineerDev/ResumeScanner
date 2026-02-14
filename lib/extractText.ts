@@ -6,16 +6,6 @@
 /// <reference path="../types/node-globals.d.ts" />
 import mammoth from 'mammoth';
 
-// pdf-parse is CJS; use require in Node (API routes only)
-function getPdfParse(): (buf: Buffer) => Promise<{ text?: string }> {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    return require('pdf-parse') as (buf: Buffer) => Promise<{ text?: string }>;
-  } catch {
-    throw new Error('pdf-parse is not available. Ensure it is installed.');
-  }
-}
-
 export async function extractTextFromBuffer(
   buffer: Buffer,
   mimeType: string
@@ -27,7 +17,10 @@ export async function extractTextFromBuffer(
 
   if (type === 'application/pdf') {
     try {
-      const pdfParse = getPdfParse();
+      const pdfParseModule = await import('pdf-parse');
+      const pdfParse = (typeof (pdfParseModule as unknown as { default?: (buf: Buffer) => Promise<{ text?: string }> }).default === 'function'
+        ? (pdfParseModule as unknown as { default: (buf: Buffer) => Promise<{ text?: string }> }).default
+        : pdfParseModule) as (buf: Buffer) => Promise<{ text?: string }>;
       const data = await pdfParse(buffer);
       const text = data?.text ?? '';
       return String(text).replace(/\s+/g, ' ').trim();
