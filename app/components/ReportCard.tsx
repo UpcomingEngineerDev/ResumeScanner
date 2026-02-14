@@ -55,6 +55,19 @@ export default function ReportCard({ result }: ReportCardProps) {
             <span className="font-medium">{skillGaps.length}</span>
           </li>
         </ul>
+        {missing.length > 0 && (
+          <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50/80 p-3">
+            <h3 className="text-sm font-semibold text-amber-900">Missing Keywords (add these)</h3>
+            <p className="mt-1 text-xs text-amber-800">Consider adding these from the job description to improve your match.</p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {missing.map((kw) => (
+                <span key={kw} className="rounded bg-amber-100 px-2 py-0.5 text-xs text-amber-900">
+                  {String(kw)}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
         {formattingIssues.length > 0 && (
           <div className="mt-4 rounded-lg bg-orange-50 p-3">
             <h3 className="text-sm font-semibold text-orange-800">Formatting Issues</h3>
@@ -65,6 +78,50 @@ export default function ReportCard({ result }: ReportCardProps) {
             </ul>
           </div>
         )}
+      </div>
+
+      <div className="card border-2 border-brand-200 bg-brand-50/30">
+        <h2 className="mb-2 text-xl font-semibold text-gray-900">Changes to be made</h2>
+        <p className="mb-4 text-sm text-gray-600">
+          This resume should be updated with the following changes in the sections mentioned below.
+        </p>
+        <ul className="space-y-3 text-sm">
+          {missing.length > 0 && (
+            <li>
+              <span className="font-medium text-gray-700">Keywords to add:</span>{' '}
+              <span className="text-gray-600">{missing.slice(0, 20).join(', ')}{missing.length > 20 ? ` (+${missing.length - 20} more)` : ''}</span>
+            </li>
+          )}
+          {formattingIssues.length > 0 && (
+            <li>
+              <span className="font-medium text-gray-700">Formatting:</span>
+              <ul className="mt-1 list-inside list-disc text-gray-600">
+                {formattingIssues.map((issue, i) => (
+                  <li key={i}>{String(issue)}</li>
+                ))}
+              </ul>
+            </li>
+          )}
+          {sectionSuggestions.map((sec, index) => {
+            const improvements = Array.isArray(sec.improvements) ? sec.improvements : [];
+            const missingSec = Array.isArray(sec.missing) ? sec.missing : [];
+            if (improvements.length === 0 && missingSec.length === 0) return null;
+            const label = getSectionLabel(sec.section);
+            return (
+              <li key={`changes-${index}`}>
+                <span className="font-medium text-gray-700">{label}:</span>
+                <ul className="mt-1 list-inside list-disc text-gray-600">
+                  {missingSec.length > 0 && (
+                    <li>Add or include: {missingSec.join(', ')}</li>
+                  )}
+                  {improvements.map((imp, i) => (
+                    <li key={i}>{String(imp)}</li>
+                  ))}
+                </ul>
+              </li>
+            );
+          })}
+        </ul>
       </div>
 
       <div className="card">

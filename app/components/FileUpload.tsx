@@ -9,6 +9,7 @@ const ACCEPTED = {
   'application/pdf': ['.pdf'],
   'application/msword': ['.doc'],
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+  'application/octet-stream': ['.doc', '.docx'],
   'image/png': ['.png'],
   'image/jpeg': ['.jpg', '.jpeg'],
   'image/svg+xml': ['.svg'],

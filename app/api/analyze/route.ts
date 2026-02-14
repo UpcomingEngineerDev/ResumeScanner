@@ -7,6 +7,7 @@ const ALLOWED_TYPES = [
   'application/pdf',
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/octet-stream',
   'image/png',
   'image/jpeg',
   'image/jpg',
@@ -85,7 +86,13 @@ export async function POST(request: NextRequest) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const mimeType = file.type;
+    const fileName = (file.name || '').toLowerCase();
+    let mimeType = file.type;
+    if (!mimeType && (fileName.endsWith('.doc') || fileName.endsWith('.docx'))) {
+      mimeType = fileName.endsWith('.docx')
+        ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        : 'application/msword';
+    }
 
     const imagePlaceholder = 'Resume text from image could not be extracted. Please use PDF or DOCX for best results.';
     let resumeText = '';
